@@ -1,4 +1,4 @@
 Mirror
 ======
 
-Instant visualization of Java code
+Instant visualization of Java code via a Eclipse plugin.
