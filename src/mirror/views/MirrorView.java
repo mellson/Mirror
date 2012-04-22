@@ -1,6 +1,5 @@
 package mirror.views;
 
-
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.*;
 import org.eclipse.jface.viewers.*;
@@ -10,7 +9,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
-
+import mirror.*;
 
 /**
  * This sample class demonstrates how to plug-in a new
@@ -58,7 +57,8 @@ public class MirrorView extends ViewPart {
 		public void dispose() {
 		}
 		public Object[] getElements(Object parent) {
-			return new String[] { "One", "Two", "Three" };
+			Test t = new Test();
+			return new String[] { "One", t.tlf(), "Three" };
 		}
 	}
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
