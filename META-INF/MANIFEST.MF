@@ -7,6 +7,8 @@ Bundle-Activator: mirror.Activator
 Bundle-Vendor: Anders Bech Mellson
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.scala-ide.scala.library
+ org.scala-ide.scala.library,
+ org.eclipse.jface.text;bundle-version="3.7.2",
+ org.eclipse.core.resources;bundle-version="3.7.101"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
