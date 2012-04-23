@@ -1,5 +1,5 @@
 package mirror
 
 class Test {
-  def tlf = "22116649"
+	def tlf = Array("22116649","25139061","112")
 }
