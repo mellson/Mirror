@@ -12,8 +12,8 @@
             name="Mirror View"
             icon="icons/sample.gif"
             category="Mirror"
-            class="mirror.views.MirrorView"
-            id="mirror.views.MirrorView">
+            class="mirror.views.MirrorViewScala"
+            id="mirror.views.MirrorViewScala">
       </view>
    </extension>
    <extension
@@ -24,7 +24,7 @@
                ratio="0.5"
                relative="org.eclipse.ui.views.TaskList"
                relationship="right"
-               id="mirror.views.MirrorView">
+               id="mirror.views.MirrorViewScala">
          </view>
       </perspectiveExtension>
    </extension>
