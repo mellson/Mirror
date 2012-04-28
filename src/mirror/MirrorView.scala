@@ -6,13 +6,6 @@ import org.eclipse.swt.SWT
 import org.eclipse.ui.part.ViewPart
 import org.eclipse.ui.IEditorPart
 import org.eclipse.ui.PlatformUI
-import java.beans.PropertyChangeListener
-import org.eclipse.ui.IPropertyListener
-import org.eclipse.swt.events.KeyListener
-import org.eclipse.swt.events.KeyEvent
-import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor
-import org.eclipse.jdt.internal.ui.javaeditor.JavaEditor
-import org.eclipse.swt.widgets.Control
 import org.eclipse.jface.text.IDocument
 import org.eclipse.ui.texteditor.ITextEditor
 import org.eclipse.jface.text.IDocumentListener
@@ -25,9 +18,14 @@ class MirrorView extends ViewPart {
 	def createPartControl(parent: Composite): Unit = {
 		text = new StyledText(parent, SWT.BORDER)
 		text setEditable false
+		
+		// Get the current editor
 		activeEditor = PlatformUI.getWorkbench.getActiveWorkbenchWindow.getActivePage.getActiveEditor
 		if (activeEditor != null) {
+			// Get the source code from the editor
 			val document: IDocument = activeEditor.asInstanceOf[ITextEditor].getDocumentProvider.getDocument(activeEditor.getEditorInput)
+			
+			// React to changes in the source
 			document.addDocumentListener(new IDocumentListener {
 				def documentAboutToBeChanged(event:DocumentEvent) {}
 				def documentChanged(event:DocumentEvent) {
@@ -36,7 +34,7 @@ class MirrorView extends ViewPart {
 				})
 			}
 		}
-
+	// Method called whenever the view gets focused
 	def setFocus(): Unit = { }
 }
 
