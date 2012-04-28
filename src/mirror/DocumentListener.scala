@@ -1,18 +1,21 @@
+/* (c) 2012 Anders Bech Mellson - anbh@itu.dk */
+
 package mirror
 
-import org.eclipse.jface.text.IDocumentListener
-import org.eclipse.jface.text.DocumentEvent
+import org.eclipse.jface.text.{IDocumentListener,DocumentEvent,IDocument}
 import org.eclipse.swt.custom.StyledText
-import org.eclipse.jface.text.IDocument
 
 class DocumentListener extends IDocumentListener{
 	var document: IDocument = null
 	var text: StyledText = null
   
-	def documentAboutToBeChanged(event:DocumentEvent) {}
-	def documentChanged(event:DocumentEvent) {
-					text setText document.get
-					}
+	// React to changes in the source code from the editor
+	def documentAboutToBeChanged(event:DocumentEvent) = {}
+	def documentChanged(event:DocumentEvent) = { update }
+	
+	def update = text setText document.get
+	
+	def dispose(): Unit = {
+		document.removeDocumentListener(this)
+	}
 }
-
-object DocumentListener extends DocumentListener {}
