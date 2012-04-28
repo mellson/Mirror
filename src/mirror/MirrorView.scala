@@ -14,7 +14,10 @@ import org.eclipse.jface.text.DocumentEvent
 class MirrorView extends ViewPart {
 	val ID = "mirror.views.MirrorView"
 	var text: StyledText = null
+	var document: IDocument = null
 	var activeEditor: IEditorPart = null
+	val listener: DocumentListener = DocumentListener
+	
 	def createPartControl(parent: Composite): Unit = {
 		text = new StyledText(parent, SWT.BORDER)
 		text setEditable false
@@ -22,20 +25,25 @@ class MirrorView extends ViewPart {
 		// Get the current editor
 		activeEditor = PlatformUI.getWorkbench.getActiveWorkbenchWindow.getActivePage.getActiveEditor
 		if (activeEditor != null) {
+		  
 			// Get the source code from the editor
-			val document: IDocument = activeEditor.asInstanceOf[ITextEditor].getDocumentProvider.getDocument(activeEditor.getEditorInput)
+			document = activeEditor.asInstanceOf[ITextEditor].getDocumentProvider.getDocument(activeEditor.getEditorInput)
 			
-			// React to changes in the source
-			document.addDocumentListener(new IDocumentListener {
-				def documentAboutToBeChanged(event:DocumentEvent) {}
-				def documentChanged(event:DocumentEvent) {
-					text setText document.get
-					}
-				})
+			// Give the listener the correct references
+			listener.document = document
+			listener.text = text
+			
+			// React to changes in the source			
+			document.addDocumentListener(listener)
 			}
 		}
 	// Method called whenever the view gets focused
 	def setFocus(): Unit = { }
+	
+	override def dispose(): Unit = {
+	  document.removeDocumentListener(listener)
+	  super.dispose
+	}
 }
 
 object MirrorView extends MirrorView { }
