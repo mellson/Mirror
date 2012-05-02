@@ -26,14 +26,10 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
-<<<<<<< HEAD
-		
-=======
 		MessageConsole console = new MessageConsole("My Console", null);
 		console.activate();
 		ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[]{ console });
 		out = console.newMessageStream();
->>>>>>> branch 'master' of https://github.com/mofus/Mirror.git
 	}
 	
 	/*
