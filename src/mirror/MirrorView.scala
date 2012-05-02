@@ -10,6 +10,7 @@ import org.eclipse.ui.IEditorPart
 import org.eclipse.ui.PlatformUI
 import org.eclipse.jface.text.{IDocument, IDocumentListener}
 import org.eclipse.ui.texteditor.ITextEditor
+import org.eclipse.ui.IPropertyListener
 
 class MirrorView extends ViewPart {
 	val ID = "mirror.views.MirrorView"
@@ -35,6 +36,12 @@ class MirrorView extends ViewPart {
 
 		    // Update the view with the currently loaded source code
 		    listener.update
+		    
+		    activeEditor.addPropertyListener(new IPropertyListener {
+		      def propertyChanged(source:Object, propertyId:Int) {
+                log(source.toString)
+            }
+		    })
 		} else
 		  log("Missed")
 	}
