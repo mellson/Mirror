@@ -6,11 +6,19 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: mirror.Activator
 Bundle-Vendor: Anders Bech Mellson
 Require-Bundle: org.eclipse.ui,
+<<<<<<< HEAD
+ org.eclipse.core.runtime,
+ org.scala-ide.scala.library,
+ org.eclipse.core.resources;bundle-version="3.7.101",
+ org.eclipse.jface.text;bundle-version="3.7.2",
+ org.eclipse.ui.workbench.texteditor;bundle-version="3.7.0",
+=======
  org.scala-ide.scala.library,
  org.eclipse.help;bundle-version="3.5.100",
  org.eclipse.jface.text;bundle-version="3.7.2",
  org.eclipse.ui.workbench.texteditor;bundle-version="3.7.0",
  org.eclipse.core.runtime;bundle-version="3.7.0",
+>>>>>>> branch 'master' of https://github.com/mofus/Mirror.git
  org.eclipse.ui.console;bundle-version="3.5.100"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

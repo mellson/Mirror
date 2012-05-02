@@ -12,8 +12,13 @@
             name="Mirror View"
             icon="icons/sample.gif"
             category="Mirror"
+<<<<<<< HEAD
+            class="mirror.views.MirrorViewScala"
+            id="mirror.views.MirrorViewScala">
+=======
             class="mirror.MirrorView"
             id="mirror.views.MirrorView">
+>>>>>>> branch 'master' of https://github.com/mofus/Mirror.git
       </view>
    </extension>
    <extension
