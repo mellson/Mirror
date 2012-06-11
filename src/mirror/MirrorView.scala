@@ -16,19 +16,21 @@ class MirrorView extends ViewPart {
 			val listener: DocumentListener = new DocumentListener
 
 			def createPartControl(parent: Composite): Unit = {
-			//	    log("Startup")
 			// Get the current editor
 			val activeEditor = PlatformUI.getWorkbench.getActiveWorkbenchWindow.getActivePage.getActiveEditor
 					if (activeEditor.isInstanceOf[ITextEditor]) {
 						val text = new StyledText(parent, SWT.BORDER)
 						text setEditable false
 
+						PlatformUI.getWorkbench.getActiveWorkbenchWindow.getActivePage.getActiveEditor
+						
 						// Get the source code from the editor
 						val document = activeEditor.asInstanceOf[ITextEditor].getDocumentProvider.getDocument(activeEditor.getEditorInput)
-
+						
 						// Give the listener the correct references
 						listener.document = document
 						listener.text = text
+						listener.editor = activeEditor
 
 						// React to changes in the source			
 						document.addDocumentListener(listener)
@@ -38,8 +40,9 @@ class MirrorView extends ViewPart {
 					} else
 						log("Missed")
 	}
+	
 	// Method called whenever the view gets focused
-	def setFocus(): Unit = { }
+	def setFocus(): Unit = { System.out.println("View got focused") }
 
 	// Removing the listener when the plug-in gets disposed
 	override def dispose(): Unit = {
