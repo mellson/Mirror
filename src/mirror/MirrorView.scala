@@ -8,45 +8,26 @@ import org.eclipse.swt.SWT
 import org.eclipse.ui.part.ViewPart
 import org.eclipse.ui.IEditorPart
 import org.eclipse.ui.PlatformUI
-import org.eclipse.jface.text.{IDocument, IDocumentListener}
-import org.eclipse.ui.texteditor.ITextEditor
 
 class MirrorView extends ViewPart {
 	val ID = "mirror.views.MirrorView"
-			val listener: DocumentListener = new DocumentListener
 
-			def createPartControl(parent: Composite): Unit = {
-			// Get the current editor
-			val activeEditor = PlatformUI.getWorkbench.getActiveWorkbenchWindow.getActivePage.getActiveEditor
-					if (activeEditor.isInstanceOf[ITextEditor]) {
-						val text = new StyledText(parent, SWT.BORDER)
-						text setEditable false
-
-						PlatformUI.getWorkbench.getActiveWorkbenchWindow.getActivePage.getActiveEditor
-						
-						// Get the source code from the editor
-						val document = activeEditor.asInstanceOf[ITextEditor].getDocumentProvider.getDocument(activeEditor.getEditorInput)
-						
-						// Give the listener the correct references
-						listener.document = document
-						listener.text = text
-						listener.editor = activeEditor
-
-						// React to changes in the source			
-						document.addDocumentListener(listener)
-
-						// Update the view with the currently loaded source code
-						listener.update
-					} else
-						log("Missed")
+	def createPartControl(parent: Composite): Unit = {
+			val text = new StyledText(parent, SWT.BORDER)
+			text setEditable false
+			
+			val partListener = new PartListener
+			partListener.text = text
+			
+			// Listen to the workbench for open and close events
+			PlatformUI.getWorkbench.getActiveWorkbenchWindow.getActivePage.addPartListener(partListener)
 	}
-	
+
 	// Method called whenever the view gets focused
-	def setFocus(): Unit = { System.out.println("View got focused") }
+	def setFocus(): Unit = {}
 
 	// Removing the listener when the plug-in gets disposed
 	override def dispose(): Unit = {
-			listener.dispose
 			super.dispose
 	}
 

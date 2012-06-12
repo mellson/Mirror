@@ -15,17 +15,26 @@ import org.eclipse.jdt.core.JavaCore
 import org.eclipse.jdt.internal.ui.javaeditor.ICompilationUnitDocumentProvider
 import org.eclipse.jdt.ui.JavaUI
 
-class DocumentListener extends IDocumentListener{
+class DocumentListener extends IDocumentListener {
 	var document: IDocument = null
 	var text: StyledText = null
 	var compiler: DynamicCompiler = null
 	var editor: IEditorPart = null
-  
+	var unit: ICompilationUnit = null
+	var packageName: String = null
+	var className: String = null
+	
 	// React to changes in the source code from the editor
 	def documentAboutToBeChanged(event:DocumentEvent) = {}
-	def documentChanged(event:DocumentEvent) = { compile }
 	
-	def update = text setText document.get
+	def documentChanged(event:DocumentEvent) = {
+	  compile
+	  }
+	
+	def update =  {
+	  if (methodName!=null)
+		  text setText packageName+"."+className
+	}
 	
 	def dispose(): Unit = {
 		document.removeDocumentListener(this)
@@ -34,17 +43,18 @@ class DocumentListener extends IDocumentListener{
 	// Get the current caret position in the source file
 	def caretPosition = editor.getAdapter(classOf[Control]).asInstanceOf[StyledText].getCaretOffset
 	
-	def printMethodName = {
-	  val unit = document.get.asInstanceOf[ICompilationUnit]
+	def methodName = {
 	  val types = unit.getAllTypes
+	  var name: String = null;
 	  for (itype : IType <- types) {
 	    val methods = itype.getMethods
-	    for (method : IMethod <- methods) {
+	    for (method <- methods) {
 	      if (caretPosition >= method.getSourceRange.getOffset && caretPosition <= method.getSourceRange.getLength + method.getSourceRange.getOffset) {
-	        System.out.println(method.getElementName);
+	        name = method.getElementName
 	      }
 	    }
 	  }
+	  name
 	}
 	
 //	def packageName = {
@@ -57,8 +67,7 @@ class DocumentListener extends IDocumentListener{
 //	  compiler = new DynamicCompiler
 //	  compiler.init
 //	  val c = compiler.compileToClass("a", document.get).newInstance
-//	  val c: CompilerTest = new CompilerTest(document.get)
-	  System.out.println("Caret position "+caretPosition)
-//	  printMethodName
+	  val c = new CompilerTest(document.get,(packageName+"."+className),methodName)
+//	  System.out.println("Caret position "+caretPosition)
 	}
 }

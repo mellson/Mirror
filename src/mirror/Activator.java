@@ -3,10 +3,6 @@ package mirror;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 /**
@@ -26,10 +22,7 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
-		MessageConsole console = new MessageConsole("My Console", null);
-		console.activate();
-		ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[]{ console });
-		out = console.newMessageStream();
+		
 	}
 	
 	/*
