@@ -17,11 +17,15 @@ import org.eclipse.jdt.core.ICompilationUnit
 import org.eclipse.swt.widgets.Control
 import org.eclipse.swt.custom.CaretListener
 import org.eclipse.swt.custom.CaretEvent
+import org.eclipse.jdt.core.IType
+import org.eclipse.swt.widgets.Group
+import org.eclipse.swt.widgets.Composite
 
 class PartListener extends IPartListener2 with CaretListener {
   var text: StyledText = null
+  var group: Composite = null
   val listener: DocumentListener = new DocumentListener
-
+  
   def compilationUnitForDocument = {
     // Get the root of the workspace
     val workspace = ResourcesPlugin.getWorkspace
@@ -76,7 +80,8 @@ class PartListener extends IPartListener2 with CaretListener {
         
         // Give the listener the correct references
         listener.document = document
-        listener.text = text
+        listener.group = group
+//        listener.text = text
         listener.editor = activeEditor
         val x = compilationUnitForDocument
         listener.unit =  x._1

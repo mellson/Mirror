@@ -8,16 +8,27 @@ import org.eclipse.swt.SWT
 import org.eclipse.ui.part.ViewPart
 import org.eclipse.ui.IEditorPart
 import org.eclipse.ui.PlatformUI
+import org.eclipse.swt.widgets.Group
+import org.eclipse.swt.graphics.Color
+import org.eclipse.swt.graphics.Device
+import org.eclipse.swt.widgets.Display
 
 class MirrorView extends ViewPart {
 	val ID = "mirror.views.MirrorView"
 
 	def createPartControl(parent: Composite): Unit = {
-			val text = new StyledText(parent, SWT.BORDER)
-			text setEditable false
+	  val group = new Composite(parent, SWT.INHERIT_DEFAULT)
+	  val white = Display.getDefault.getSystemColor(SWT.COLOR_WHITE) 
+			group setBackground(white)
+//			val text = new StyledText(group, SWT.NONE)
+//			text.pack
+//			text.setLocation(10, 10)
+//			text setEditable false
+//			group.pack
 			
 			val partListener = new PartListener
-			partListener.text = text
+			partListener.group = group
+//			partListener.text = text
 			
 			// Listen to the workbench for open and close events
 			PlatformUI.getWorkbench.getActiveWorkbenchWindow.getActivePage.addPartListener(partListener)

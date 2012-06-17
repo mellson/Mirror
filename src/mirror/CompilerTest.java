@@ -18,6 +18,9 @@ public class CompilerTest {
 		
 		int[] numbers = randomNumberArray(10);
 		
+		int[] n = {10,2,3,4,5};
+		System.out.println(n.getClass());
+		
 		Method method = c.getMethod(methodName, numbers.getClass());
 		method.invoke(object, numbers);
 	}
