@@ -15,32 +15,11 @@ public class CompilerTest {
 		compiler.init();
 		Class<?> c = compiler.compileToClass(className, source);
 		Object object = c.newInstance();
+		String s = "{10,2,3,4,5}";
 		
-		int[] numbers = randomNumberArray(10);
-		
-		int[] n = {10,2,3,4,5};
-		System.out.println(n.getClass());
+		int[] numbers = {10,2,3,4,5};
 		
 		Method method = c.getMethod(methodName, numbers.getClass());
 		method.invoke(object, numbers);
-	}
-	
-	private int[] randomNumberArray(int size) {
-		// Create an ordered list
-		List<Integer> list = new ArrayList<Integer>();
-		for (int i = 1; i < size; i++) {
-		    list.add(i);
-		}
-
-		// Shuffle it
-		Collections.shuffle(list);
-
-		// Get an int[] array
-		int[] array = new int[list.size()];
-		for (int i = 0; i < list.size(); i++) {
-		    array[i] = list.get(i);
-		}
-		
-		return array;
-	}
+	}	
 }
