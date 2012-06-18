@@ -70,7 +70,6 @@ class DocumentListener extends IDocumentListener {
             }
             val c = Class.forName("[I")
             System.out.println(c.getComponentType +" array typen")
-            val g = new GenInput
           }
         })
         
