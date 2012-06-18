@@ -7,6 +7,8 @@ import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Display
 import org.eclipse.ui.PlatformUI
 import org.eclipse.ui.part.ViewPart
+import org.eclipse.ui.IWorkbench
+import org.eclipse.ui.IWorkbenchPage
 
 class MirrorView extends ViewPart {
   val ID = "mirror.views.MirrorView"
@@ -26,7 +28,7 @@ class MirrorView extends ViewPart {
     
     // Listen to the workbench for open and close events
     PlatformUI.getWorkbench.getActiveWorkbenchWindow.getActivePage.addPartListener(partListener)
-
+    
     // Set the reference to the group view
     partListener.group = group
   }

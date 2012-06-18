@@ -17,7 +17,7 @@ import org.eclipse.ui.texteditor.ITextEditor
 class PartListener extends IPartListener2 with CaretListener {
   var group: Composite = null
   val listener: DocumentListener = new DocumentListener
-
+  
   def compilationUnitForDocument = {
     // Get the root of the workspace
     val workspace = ResourcesPlugin.getWorkspace
@@ -89,12 +89,12 @@ class PartListener extends IPartListener2 with CaretListener {
   }
 
   def partClosed(partRef: IWorkbenchPartReference): Unit = {
-    // Check if the part closed is a Java source file
-    val title = partRef.getTitle.toLowerCase
-    if (title.endsWith(".java")) {
-      // Don't listen to changes in the document anymore
-      listener.dispose
-    }
+//    // Check if the part closed is a Java source file
+//    val title = partRef.getTitle.toLowerCase
+//    if (title.endsWith(".java")) {
+//      // Don't listen to changes in the document anymore
+//      listener.dispose
+//    }
   }
 
   def caretMoved(event: CaretEvent) {

@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Label
 import org.eclipse.swt.widgets.Text
 import org.eclipse.swt.widgets.Listener
 import org.eclipse.swt.widgets.Event
+import java.util.regex.Pattern
 
 class DocumentListener extends IDocumentListener {
   var document: IDocument = null
@@ -58,8 +59,18 @@ class DocumentListener extends IDocumentListener {
           def handleEvent(event: Event) = {
             // Check when the user presses the enter key
             if (event.keyCode==13) {
-              System.out.println(inputValue getText)
+              val p = Pattern.compile("-?\\d+");
+              val m = p.matcher(inputValue getText);
+              val list = new ArrayBuffer[Int]
+              while (m.find()) {
+            	  list += new Integer(m.group());
+        	  }
+              System.out.println(list)
+              val c = new CompilerTest(document.get,(packageName+"."+className),methodName, list.toArray)
             }
+            val c = Class.forName("[I")
+            System.out.println(c.getComponentType +" array typen")
+            val g = new GenInput
           }
         })
         
@@ -68,9 +79,9 @@ class DocumentListener extends IDocumentListener {
     }
   }
 
-  def dispose(): Unit = {
-    document.removeDocumentListener(this)
-  }
+//  def dispose(): Unit = {
+////    document.removeDocumentListener(this)
+//  }
 
   // Get the current caret position in the source file
   def caretPosition = editor.getAdapter(classOf[Control]).asInstanceOf[StyledText].getCaretOffset
@@ -108,6 +119,6 @@ class DocumentListener extends IDocumentListener {
   }
 
   def compile = {
-    val c = new CompilerTest(document.get,(packageName+"."+className),methodName)
+//    val c = new CompilerTest(document.get,(packageName+"."+className),methodName)
   }
 }
