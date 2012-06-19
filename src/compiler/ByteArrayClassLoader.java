@@ -39,7 +39,7 @@ public class ByteArrayClassLoader extends ClassLoader {
             throw new ClassNotFoundException("Class name: " + name, ex);
         }
         
-        System.out.printf("Method findClass() called for class %s\n", name);
+//        System.out.printf("Method findClass() called for class %s\n", name);
 
         return cls;
     }

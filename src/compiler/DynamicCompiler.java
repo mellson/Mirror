@@ -31,7 +31,7 @@ public class DynamicCompiler {
 		CompilationTask task = compiler.getTask(null, manager, collector, null, null, units);
 		boolean status = task.call();
 		if (status) {
-			System.out.printf("Compilation successful!!!\n");
+//			System.out.printf("Compilation successful!!!\n");
 			clazz = manager.getClassLoader(null).loadClass(fullName);
 		}
 		else {

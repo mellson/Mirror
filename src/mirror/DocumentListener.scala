@@ -24,16 +24,20 @@ import java.util.regex.Pattern
 class DocumentListener extends IDocumentListener {
   var document: IDocument = null
   var group: Composite = null
+  var inputHandler: InputHandler = null
   var compiler: DynamicCompiler = null
   var editor: IEditorPart = null
   var unit: ICompilationUnit = null
   var packageName: String = null
   var className: String = null
+  var parameters: ArrayBuffer[Object] = null
 
   // React to changes in the source code from the editor
   def documentAboutToBeChanged(event:DocumentEvent) = {}
   def documentChanged(event:DocumentEvent) = {
-    compile
+//    compile
+    for (p <- parameters)
+      System.out.println(p.toString)
   }
 
   def update =  {
@@ -41,6 +45,8 @@ class DocumentListener extends IDocumentListener {
       // Dispose old text in the group view
       for (child <- group.getChildren)
         child.dispose
+        
+      parameters = new ArrayBuffer[Object]
         
       // Set up labels and inputs for each parameter a method takes  
       var y = 0
@@ -50,37 +56,28 @@ class DocumentListener extends IDocumentListener {
         inputLabel setText input + " = "
         inputLabel pack
         val point = inputLabel getSize
-        
         val inputValue = new Text(group, SWT.SINGLE)
         inputValue setLocation(point.x, y)
         inputValue setSize(group.getSize.x - point.x, inputValue.getLineHeight)
-        inputValue setMessage "Set the value for " + input + " here"
+        val message = inputHandler.savedInputs.get(input+methodName)
+        if (message!=None) {
+          inputValue setMessage message.get.toString
+          parameters += message.get
+        }
+        else
+          inputValue setMessage "Set the value for " + input + " here"
         inputValue addListener(SWT.KeyDown, new Listener() {
           def handleEvent(event: Event) = {
             // Check when the user presses the enter key
             if (event.keyCode==13) {
-              val p = Pattern.compile("-?\\d+");
-              val m = p.matcher(inputValue getText);
-              val list = new ArrayBuffer[Int]
-              while (m.find()) {
-            	  list += new Integer(m.group());
-        	  }
-              System.out.println(list)
-              val c = new CompilerTest(document.get,(packageName+"."+className),methodName, list.toArray)
+              parameters += inputHandler objectFromString(input, methodName, inputValue getText)
             }
-            val c = Class.forName("[I")
-            System.out.println(c.getComponentType +" array typen")
           }
         })
-        
         y += point.y
       }
     }
   }
-
-//  def dispose(): Unit = {
-////    document.removeDocumentListener(this)
-//  }
 
   // Get the current caret position in the source file
   def caretPosition = editor.getAdapter(classOf[Control]).asInstanceOf[StyledText].getCaretOffset
@@ -88,7 +85,6 @@ class DocumentListener extends IDocumentListener {
   def getMethodInputs(unit: ICompilationUnit) = {
     val inputs = new ArrayBuffer[String]
     val allTypes = unit.getAllTypes
-
     for (itype <- allTypes) {
       val methods = itype.getMethods
       for (method <- methods) {
@@ -117,7 +113,10 @@ class DocumentListener extends IDocumentListener {
     name
   }
 
-  def compile = {
-//    val c = new CompilerTest(document.get,(packageName+"."+className),methodName)
-  }
+  // Compile and run the current method
+  def compile = new MirrorCompiler(document.get,(packageName+"."+className),methodName, getMethodInputs(unit).toArray)
+  
+  //  def dispose(): Unit = {
+////    document.removeDocumentListener(this)
+//  }
 }

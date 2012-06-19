@@ -16,6 +16,7 @@ import org.eclipse.ui.texteditor.ITextEditor
 
 class PartListener extends IPartListener2 with CaretListener {
   var group: Composite = null
+  var inputHandler: InputHandler = null
   val listener: DocumentListener = new DocumentListener
   
   def compilationUnitForDocument = {
@@ -78,6 +79,7 @@ class PartListener extends IPartListener2 with CaretListener {
         listener.unit =  x._1
         listener.packageName = x._2
         listener.className = x._3
+        listener.inputHandler = inputHandler
 
         // React to changes in the source
         document.addDocumentListener(listener)

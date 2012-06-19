@@ -13,6 +13,7 @@ import org.eclipse.ui.IWorkbenchPage
 class MirrorView extends ViewPart {
   val ID = "mirror.views.MirrorView"
   var group: Composite = null
+  val inputHandler = new InputHandler
   
   def createPartControl(parent: Composite): Unit = {
     // Create group view for the plugin & set it's background to white
@@ -31,6 +32,7 @@ class MirrorView extends ViewPart {
     
     // Set the reference to the group view
     partListener.group = group
+    partListener.inputHandler = inputHandler
   }
 
   // Removing the listener when the plug-in gets disposed
