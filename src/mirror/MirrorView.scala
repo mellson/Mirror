@@ -5,10 +5,10 @@ package mirror
 import org.eclipse.swt.SWT
 import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Display
+import org.eclipse.swt.widgets.Event
+import org.eclipse.swt.widgets.Listener
 import org.eclipse.ui.PlatformUI
 import org.eclipse.ui.part.ViewPart
-import org.eclipse.ui.IWorkbench
-import org.eclipse.ui.IWorkbenchPage
 
 class MirrorView extends ViewPart {
   val ID = "mirror.views.MirrorView"
@@ -20,6 +20,12 @@ class MirrorView extends ViewPart {
     group = new Composite(parent, SWT.INHERIT_DEFAULT)
     val white = Display.getDefault.getSystemColor(SWT.COLOR_WHITE)
     group setBackground(white)
+    
+    group addListener(SWT.DefaultSelection, new Listener() {
+      def handleEvent(event: Event) {
+        System.out.println(event + " : "+ event.widget.toString)
+      }
+    })
   }
 
   // Method called whenever the view gets focused

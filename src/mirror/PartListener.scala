@@ -17,6 +17,7 @@ import org.eclipse.ui.texteditor.ITextEditor
 class PartListener extends IPartListener2 with CaretListener {
   var group: Composite = null
   var inputHandler: InputHandler = null
+  var caretOffset = 0
   val listener: DocumentListener = new DocumentListener
   
   def compilationUnitForDocument = {
@@ -100,7 +101,10 @@ class PartListener extends IPartListener2 with CaretListener {
   }
 
   def caretMoved(event: CaretEvent) {
-    listener.update
+    if (event.caretOffset != caretOffset) {
+    	listener.update
+    	caretOffset = event.caretOffset
+    }
   }
 
   // Unused methods inherited from interface
