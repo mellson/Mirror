@@ -14,6 +14,7 @@ class MirrorView extends ViewPart {
   val ID = "mirror.views.MirrorView"
   var group: Composite = null
   val inputHandler = new InputHandler
+  val partListener = new PartListener
   
   def createPartControl(parent: Composite): Unit = {
     // Create group view for the plugin & set it's background to white
@@ -21,18 +22,12 @@ class MirrorView extends ViewPart {
     val white = Display.getDefault.getSystemColor(SWT.COLOR_WHITE)
     group setBackground(white)
     
-    group addListener(SWT.DefaultSelection, new Listener() {
-      def handleEvent(event: Event) {
-        System.out.println(event + " : "+ event.widget.toString)
-      }
-    })
+    if (PlatformUI.getWorkbench.getActiveWorkbenchWindow.getActivePage != None)
+      setFocus
   }
 
   // Method called whenever the view gets focused
   def setFocus(): Unit = {
-    // Create a partListener
-    val partListener = new PartListener
-    
     // Listen to the workbench for open and close events
     PlatformUI.getWorkbench.getActiveWorkbenchWindow.getActivePage.addPartListener(partListener)
     
