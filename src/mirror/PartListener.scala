@@ -19,7 +19,7 @@ class PartListener extends IPartListener2 with CaretListener {
   var inputHandler: InputHandler = null
   var caretOffset = 0
   val listener: DocumentListener = new DocumentListener
-  
+
   def compilationUnitForDocument = {
     // Get the root of the workspace
     val workspace = ResourcesPlugin.getWorkspace
@@ -48,14 +48,14 @@ class PartListener extends IPartListener2 with CaretListener {
                 packageName = mypackage.getElementName
                 compilationUnit = unit
                 // Remove .java from the unit to get the classname
-                className = unit.getElementName.substring(0, (unit.getElementName.length-5))
+                className = unit.getElementName.substring(0, (unit.getElementName.length - 5))
               }
             }
           }
         }
       }
     }
-    (compilationUnit,packageName,className)
+    (compilationUnit, packageName, className)
   }
 
   def partActivated(partRef: IWorkbenchPartReference): Unit = {
@@ -77,7 +77,7 @@ class PartListener extends IPartListener2 with CaretListener {
         listener.group = group
         listener.editor = activeEditor
         val x = compilationUnitForDocument
-        listener.unit =  x._1
+        listener.unit = x._1
         listener.packageName = x._2
         listener.className = x._3
         listener.inputHandler = inputHandler
@@ -92,18 +92,18 @@ class PartListener extends IPartListener2 with CaretListener {
   }
 
   def partClosed(partRef: IWorkbenchPartReference): Unit = {
-//    // Check if the part closed is a Java source file
-//    val title = partRef.getTitle.toLowerCase
-//    if (title.endsWith(".java")) {
-//      // Don't listen to changes in the document anymore
-//      listener.dispose
-//    }
+    //    // Check if the part closed is a Java source file
+    //    val title = partRef.getTitle.toLowerCase
+    //    if (title.endsWith(".java")) {
+    //      // Don't listen to changes in the document anymore
+    //      listener.dispose
+    //    }
   }
 
   def caretMoved(event: CaretEvent) {
     if (event.caretOffset != caretOffset) {
-    	listener.update
-    	caretOffset = event.caretOffset
+      listener.update
+      caretOffset = event.caretOffset
     }
   }
 

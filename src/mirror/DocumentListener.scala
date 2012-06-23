@@ -33,66 +33,65 @@ class DocumentListener extends IDocumentListener {
   var parameters: ArrayBuffer[Object] = null
 
   // React to changes in the source code from the editor
-  def documentAboutToBeChanged(event:DocumentEvent) = {}
-  def documentChanged(event:DocumentEvent) = {
+  def documentAboutToBeChanged(event: DocumentEvent) = {}
+  def documentChanged(event: DocumentEvent) = {
     compile
   }
 
-  def update : Int =  {
-    if (methodName!=null) {
+  def update: Int = {
+    if (methodName != null) {
       // Dispose old text in the group view
       for (child <- group.getChildren)
-      child.dispose
-      
+        child.dispose
+
       parameters = new ArrayBuffer[Object]
-      
+
       // Set up labels and inputs for each parameter a method takes  
       var y = 0
       for (input <- getMethodInputs(unit)) {
         val inputLabel = new Label(group, SWT.NONE)
-        inputLabel setLocation(0, y)
+        inputLabel setLocation (0, y)
         inputLabel setText input + " = "
         inputLabel pack
         val point = inputLabel getSize
         val inputValue = new Text(group, SWT.SINGLE)
-        inputValue setLocation(point.x, y)
-        inputValue setSize(group.getSize.x - point.x, inputValue.getLineHeight)
-        
+        inputValue setLocation (point.x, y)
+        inputValue setSize (group.getSize.x - point.x, inputValue.getLineHeight)
+
         // Check if there is saved any values for the input
-        val message = inputHandler.savedInputs.get(input+methodName)
-        if (message!=None) {
+        val message = inputHandler.savedInputs.get(input + methodName)
+        if (message != None) {
           inputValue setMessage message.get.toString
-          parameters += inputHandler objectFromString(input, methodName, message.get.toString)
-        }
-        else {
+          parameters += inputHandler objectFromString (input, methodName, message.get.toString)
+        } else {
           inputValue setMessage "Set the value for " + input + " here"
         }
-        
+
         // When the textfield gets focused, set the saved value
-        inputValue addFocusListener(new FocusListener() {
+        inputValue addFocusListener (new FocusListener() {
           def focusGained(event: FocusEvent) {
-            if (message!=None) {
-             inputValue setText message.get.toString
+            if (message != None) {
+              inputValue setText message.get.toString
             }
           }
-          
+
           // Save the value the user has typed when the focus is lost
           def focusLost(event: FocusEvent) {
             if (inputValue.getText != "")
-            parameters += inputHandler objectFromString(input, methodName, inputValue getText)
+              parameters += inputHandler objectFromString (input, methodName, inputValue getText)
           }
-          })
-        
-        inputValue addListener(SWT.KeyDown, new Listener() {
+        })
+
+        inputValue addListener (SWT.KeyDown, new Listener() {
           def handleEvent(event: Event) = {
             // Save the value the user has typed when the user presses the enter key, update the display and run the code 
-            if (event.keyCode==13) {
-              parameters += inputHandler objectFromString(input, methodName, inputValue getText)
+            if (event.keyCode == 13) {
+              parameters += inputHandler objectFromString (input, methodName, inputValue getText)
               update
               compile
             }
           }
-          })
+        })
         // Add to the y value, so that the possible next input box will be below the previous 
         y += point.y
       }
@@ -124,7 +123,7 @@ class DocumentListener extends IDocumentListener {
   def methodName = {
     val types = unit.getAllTypes
     var name: String = null;
-    for (itype : IType <- types) {
+    for (itype: IType <- types) {
       val methods = itype.getMethods
       for (method <- methods) {
         if (caretPosition >= method.getSourceRange.getOffset && caretPosition <= method.getSourceRange.getLength + method.getSourceRange.getOffset) {
@@ -136,11 +135,11 @@ class DocumentListener extends IDocumentListener {
   }
 
   // Compile and run the current method
-  def compile =  {
-    compiler.compile(document.get,(packageName+"."+className),methodName, parameters.toArray)
+  def compile = {
+    compiler.compile(document.get, (packageName + "." + className), methodName, parameters.toArray)
   }
-  
+
   //  def dispose(): Unit = {
-////    document.removeDocumentListener(this)
-//  }
+  ////    document.removeDocumentListener(this)
+  //  }
 }
