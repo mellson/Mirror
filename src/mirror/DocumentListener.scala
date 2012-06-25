@@ -142,10 +142,10 @@ class DocumentListener extends IDocumentListener {
 
   // Compile and run the current method
   def compile = {
-    compiler.compile(document.get, (packageName + "." + className), methodName, parameters.toArray)
+    compiler.compile(document.get, (packageName + "." + className), methodName, parameters.toArray, unit)
   }
 
-  //  def dispose(): Unit = {
-  ////    document.removeDocumentListener(this)
-  //  }
+    def dispose(): Unit = {
+      document.removeDocumentListener(this)
+    }
 }

@@ -1,9 +1,13 @@
 package mirror
 
 import compiler.DynamicCompiler
+import org.eclipse.jdt.core.ICompilationUnit
+import org.eclipse.jdt.core.dom.CompilationUnit
+import org.eclipse.jdt.core.dom.ASTParser
+import org.eclipse.jdt.core.dom.AST
 
 class MirrorCompiler() {
-  def compile(source: String, className: String, methodName: String, parameters: Array[Object]) {
+  def compile(source: String, className: String, methodName: String, parameters: Array[Object], unit: ICompilationUnit) {
     // Create a dynamic compiler and get it ready
     val compiler = new DynamicCompiler
     compiler init
@@ -27,5 +31,24 @@ class MirrorCompiler() {
 
       System.out.println("Return value is " + returnValue)
     }
+    
+    startParsing(unit)
   }
+  
+  def startParsing(unit: ICompilationUnit) = {
+    val parser = parse(unit)
+    val visitor = new MirrorMethodVisitor
+    parser.accept(visitor)
+    
+    for (method <- visitor.methods)
+      println(method)
+  }
+  
+  def parse(unit: ICompilationUnit) : CompilationUnit = {
+		val parser = ASTParser.newParser(AST.JLS3)
+		parser.setKind(ASTParser.K_COMPILATION_UNIT)
+		parser.setSource(unit)
+		parser.setResolveBindings(true)
+		parser.createAST(null).asInstanceOf[CompilationUnit] // parse
+	}
 }

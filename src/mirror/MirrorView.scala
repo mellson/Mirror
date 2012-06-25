@@ -28,6 +28,7 @@ class MirrorView extends ViewPart {
     val white = Display.getDefault.getSystemColor(SWT.COLOR_WHITE)
     group setBackground (white)
 
+    // Check if the editor is onscreen - if it's not create start button
     if (PlatformUI.getWorkbench.getActiveWorkbenchWindow.getActivePage != null)
       setup
     else {

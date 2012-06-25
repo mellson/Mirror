@@ -59,8 +59,6 @@ class PartListener extends IPartListener2 with CaretListener {
   }
 
   def partActivated(partRef: IWorkbenchPartReference): Unit = {
-    println(partRef)
-    
     // Check if the part activated is a Java source file
     val title = partRef.getTitle.toLowerCase
     if (title.endsWith(".java")) {
