@@ -58,40 +58,46 @@ class DocumentListener extends IDocumentListener {
         inputValue setLocation (point.x, y)
         inputValue setSize (group.getSize.x - point.x, inputValue.getLineHeight)
 
-        // Check if there is saved any values for the input
-        val message = inputHandler.savedInputs.get(input + methodName)
-        if (message != None) {
-          inputValue setMessage message.get.toString
-          parameters += inputHandler objectFromString (input, methodName, message.get.toString)
-        } else {
-          inputValue setMessage "Set the value for " + input + " here"
-        }
+        if (inputHandler.allowedInput(input)) {
+          // Check if there is saved any values for the input
+          val message = inputHandler.savedInputs.get(input + methodName)
+          if (message != None) {
+            inputValue setMessage message.get.toString
+            parameters += inputHandler objectFromString (input, methodName, message.get.toString)
+          } else {
+            inputValue setMessage "Set the value for " + input + " here"
+            if (inputHandler.isInputArray(input))
+              inputValue setMessage inputValue.getMessage + " (use ; as separater)"
+          }
 
-        // When the textfield gets focused, set the saved value
-        inputValue addFocusListener (new FocusListener() {
-          def focusGained(event: FocusEvent) {
-            if (message != None) {
-              inputValue setText message.get.toString
+          // When the textfield gets focused, set the saved value
+          inputValue addFocusListener (new FocusListener() {
+            def focusGained(event: FocusEvent) {
+              if (message != None) {
+                inputValue setText message.get.toString
+              }
             }
-          }
 
-          // Save the value the user has typed when the focus is lost
-          def focusLost(event: FocusEvent) {
-            if (inputValue.getText != "")
-              parameters += inputHandler objectFromString (input, methodName, inputValue getText)
-          }
-        })
-
-        inputValue addListener (SWT.KeyDown, new Listener() {
-          def handleEvent(event: Event) = {
-            // Save the value the user has typed when the user presses the enter key, update the display and run the code 
-            if (event.keyCode == 13) {
-              parameters += inputHandler objectFromString (input, methodName, inputValue getText)
-              update
-              compile
+            // Save the value the user has typed when the focus is lost
+            def focusLost(event: FocusEvent) {
+              if (inputValue.getText != "")
+                parameters += inputHandler objectFromString (input, methodName, inputValue getText)
             }
-          }
-        })
+          })
+
+          inputValue addListener (SWT.KeyDown, new Listener() {
+            def handleEvent(event: Event) = {
+              // Save the value the user has typed when the user presses the enter key, update the display and run the code 
+              if (event.keyCode == 13) {
+                parameters += inputHandler objectFromString (input, methodName, inputValue getText)
+                update
+                compile
+              }
+            }
+          })
+        } else
+          inputValue setText "unsupported type."
+
         // Add to the y value, so that the possible next input box will be below the previous 
         y += point.y
       }
