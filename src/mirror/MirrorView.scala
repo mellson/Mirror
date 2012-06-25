@@ -15,7 +15,7 @@ class MirrorView extends ViewPart {
   var group: Composite = null
   val inputHandler = new InputHandler
   val partListener = new PartListener
-
+  
   def createPartControl(parent: Composite): Unit = {
     // Create group view for the plugin & set it's background to white
     group = new Composite(parent, SWT.INHERIT_DEFAULT)
