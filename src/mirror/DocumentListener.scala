@@ -26,11 +26,14 @@ class DocumentListener extends IDocumentListener {
   var group: Composite = null
   var inputHandler: InputHandler = null
   val compiler = new MirrorCompiler()
+  compiler.documentListener = this
   var editor: IEditorPart = null
   var unit: ICompilationUnit = null
   var packageName: String = null
   var className: String = null
   var parameters: ArrayBuffer[Object] = null
+  var errorLabel: Label = null
+  var errorMessage = ""
 
   // React to changes in the source code from the editor
   def documentAboutToBeChanged(event: DocumentEvent) = {}
@@ -102,8 +105,27 @@ class DocumentListener extends IDocumentListener {
         y += point.y
       }
     }
+
+    // Add label for printing error message
+    errorLabel = new Label(group, SWT.NONE)
+    errorLabel setText errorMessage
+    errorLabel setLocation (0, group.getSize.y - 18)
+    errorLabel pack
+
     // Required to return some type, because I'm calling this method recursively
     0
+  }
+
+  def clearErrorMessage() = errorMessage = ""
+
+  def setErrorMessage(s: String) = {
+    // string:///a/QuickSort.java:8: ';' expected
+    println("hej hej"+s)
+    val index = s indexOf className+".java"
+    errorMessage = "Line " + (s substring(index+className.length+".java".length))
+    
+//    errorLabel setText message
+//    errorLabel pack
   }
 
   // Get the current caret position in the source file
@@ -145,7 +167,7 @@ class DocumentListener extends IDocumentListener {
     compiler.compile(document.get, (packageName + "." + className), methodName, parameters.toArray, unit)
   }
 
-    def dispose(): Unit = {
-      document.removeDocumentListener(this)
-    }
+  def dispose(): Unit = {
+    document.removeDocumentListener(this)
+  }
 }

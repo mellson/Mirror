@@ -6,21 +6,30 @@
 
 package compiler;
 
-import java.util.*;
-import javax.tools.*;
+import java.util.Arrays;
+
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticCollector;
+import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
+import javax.tools.ToolProvider;
+
+import mirror.DocumentListener;
 
 public class DynamicCompiler {
 	private JavaCompiler compiler;
 	private DiagnosticCollector<JavaFileObject> collector;
 	private JavaFileManager manager;
-		
+	public DocumentListener documentListener;
+	
 	public void init()
 		throws Exception {
 		compiler = ToolProvider.getSystemJavaCompiler();
 		collector = new DiagnosticCollector<JavaFileObject>();
 		manager = new DynamicClassFileManager<JavaFileManager>(compiler.getStandardFileManager(null, null, null));
-	}
+	}	
 	
 	public Class<?> compileToClass(String fullName, String javaCode)
 		throws Exception {
@@ -33,13 +42,14 @@ public class DynamicCompiler {
 		if (status) {
 //			System.out.printf("Compilation successful!!!\n");
 			clazz = manager.getClassLoader(null).loadClass(fullName);
+			documentListener.clearErrorMessage();
 		}
 		else {
-			System.out.printf("Message:\n");
 			for (Diagnostic<?> d : collector.getDiagnostics()) {
-				System.out.printf("%s\n", d.getMessage(null));
+				System.out.printf(d.getMessage(null));
+				documentListener.setErrorMessage(d.getMessage(null));
 			}
-			System.out.printf("***** Compilation failed!!!\n");
+//			System.out.printf("***** Compilation failed!!!\n");
 		}
 		
 		return clazz;

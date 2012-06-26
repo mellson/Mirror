@@ -5,11 +5,15 @@ import org.eclipse.jdt.core.ICompilationUnit
 import org.eclipse.jdt.core.dom.CompilationUnit
 import org.eclipse.jdt.core.dom.ASTParser
 import org.eclipse.jdt.core.dom.AST
+import sun.tools.javac.ErrorMessage
 
 class MirrorCompiler() {
+  var documentListener: DocumentListener = null;
+  
   def compile(source: String, className: String, methodName: String, parameters: Array[Object], unit: ICompilationUnit) {
     // Create a dynamic compiler and get it ready
     val compiler = new DynamicCompiler
+    compiler.documentListener = documentListener
     compiler init
 
     val c = compiler.compileToClass(className, source)
@@ -27,21 +31,18 @@ class MirrorCompiler() {
       method.setAccessible(true)
 
       // Invoke the method on the object - parameters needs to be mapped to support varargs like behavior
-      val returnValue = method.invoke(o, parameters.map(_.asInstanceOf[Object]): _*)
+//      val returnValue = method.invoke(o, parameters.map(_.asInstanceOf[Object]): _*)
 
-      System.out.println("Return value is " + returnValue)
+//      System.out.println("Return value is " + returnValue)
     }
-    
-    startParsing(unit)
+    startParsing(unit, methodName)
   }
   
-  def startParsing(unit: ICompilationUnit) = {
+  def startParsing(unit: ICompilationUnit, methodName: String) = {
     val parser = parse(unit)
     val visitor = new MirrorMethodVisitor
+    visitor.methodName = methodName
     parser.accept(visitor)
-    
-    for (method <- visitor.methods)
-      println(method)
   }
   
   def parse(unit: ICompilationUnit) : CompilationUnit = {
