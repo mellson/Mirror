@@ -20,6 +20,9 @@ import org.eclipse.swt.widgets.Label
 import org.eclipse.swt.widgets.Listener
 import org.eclipse.swt.widgets.Text
 import org.eclipse.ui.IEditorPart
+import org.eclipse.jdt.core.dom.VariableDeclarationStatement
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment
+import java.io.File
 
 class DocumentListener extends IDocumentListener {
   var document: IDocument = null
@@ -34,6 +37,11 @@ class DocumentListener extends IDocumentListener {
   var parameters: ArrayBuffer[Object] = null
   var errorLabel: Label = null
   var errorMessage = ""
+  var returnLabel: Label = null
+  var returnMessage = ""
+  var y = 0
+  var caretPosition = 0
+  var ar: Array[VariableDeclarationStatement] = null
 
   // React to changes in the source code from the editor
   def documentAboutToBeChanged(event: DocumentEvent) = {}
@@ -50,7 +58,7 @@ class DocumentListener extends IDocumentListener {
       parameters = new ArrayBuffer[Object]
 
       // Set up labels and inputs for each parameter a method takes  
-      var y = 0
+      y = 0
       for (input <- getMethodInputs(unit)) {
         val inputLabel = new Label(group, SWT.NONE)
         inputLabel setLocation (0, y)
@@ -104,6 +112,22 @@ class DocumentListener extends IDocumentListener {
         // Add to the y value, so that the possible next input box will be below the previous 
         y += point.y
       }
+
+      // Add vars from parsing AST 
+      compiler.startParsing(unit, methodName)
+      var i = 0
+      for (v <- ar) {
+        val name = v.fragments.get(0).asInstanceOf[VariableDeclarationFragment].getName
+        val result = MirrorASTHelper.readFile(name.toString)
+        val inputLabel = new Label(group, SWT.NONE)
+        inputLabel setLocation (0, y)
+        inputLabel setText v.getType + " " + name.toString + " = "  + result.replace("\n", "")
+        inputLabel pack
+        val file = new File(name.toString)
+        file.deleteOnExit
+        y += inputLabel.getSize.y
+        i += 1
+      }
     }
 
     // Add label for printing error message
@@ -112,24 +136,33 @@ class DocumentListener extends IDocumentListener {
     errorLabel setLocation (0, group.getSize.y - 18)
     errorLabel pack
 
+    // Add label for printing return value
+    returnLabel = new Label(group, SWT.NONE)
+    returnLabel setText returnMessage
+    returnLabel setLocation (0, group.getSize.y - 18 - errorLabel.getSize.y)
+    returnLabel pack
+
     // Required to return some type, because I'm calling this method recursively
     0
   }
 
+  // Error message clearing and setting
   def clearErrorMessage() = errorMessage = ""
-
   def setErrorMessage(s: String) = {
-    // string:///a/QuickSort.java:8: ';' expected
-    println("hej hej"+s)
-    val index = s indexOf className+".java"
-    errorMessage = "Line " + (s substring(index+className.length+".java".length))
-    
-//    errorLabel setText message
-//    errorLabel pack
+    val index = s indexOf className + ".java"
+    errorMessage = "Line " + (s substring (index + className.length + ".java".length))
+  }
+
+  // Return message clearing and setting
+  def clearReturnMessage() = returnMessage = ""
+  def setReturnMessage(s: String) = {
+    returnMessage = "Return value is " + s
+    returnLabel setText returnMessage
+    returnLabel pack
   }
 
   // Get the current caret position in the source file
-  def caretPosition = editor.getAdapter(classOf[Control]).asInstanceOf[StyledText].getCaretOffset
+  //  def caretPosition = editor.getAdapter(classOf[Control]).asInstanceOf[StyledText].getCaretOffset
 
   def getMethodInputs(unit: ICompilationUnit) = {
     val inputs = new ArrayBuffer[String]

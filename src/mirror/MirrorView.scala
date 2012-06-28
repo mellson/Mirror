@@ -15,6 +15,7 @@ import org.eclipse.swt.events.SelectionAdapter
 import org.eclipse.swt.events.SelectionEvent
 import org.eclipse.swt.widgets.Control
 import org.eclipse.swt.custom.StyledText
+import java.io.File
 
 class MirrorView extends ViewPart {
   val ID = "mirror.views.MirrorView"

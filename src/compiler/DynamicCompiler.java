@@ -7,7 +7,6 @@
 package compiler;
 
 import java.util.Arrays;
-
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaCompiler;
@@ -15,7 +14,6 @@ import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.ToolProvider;
-
 import mirror.DocumentListener;
 
 public class DynamicCompiler {
@@ -34,7 +32,6 @@ public class DynamicCompiler {
 	public Class<?> compileToClass(String fullName, String javaCode)
 		throws Exception {
 		Class<?> clazz = null;
-		
 		StringJavaFileObject strFile = new StringJavaFileObject(fullName, javaCode);
 		Iterable<? extends JavaFileObject> units = Arrays.asList(strFile);
 		CompilationTask task = compiler.getTask(null, manager, collector, null, null, units);
@@ -47,6 +44,7 @@ public class DynamicCompiler {
 		else {
 			for (Diagnostic<?> d : collector.getDiagnostics()) {
 				System.out.printf(d.getMessage(null));
+				documentListener.clearReturnMessage();
 				documentListener.setErrorMessage(d.getMessage(null));
 			}
 //			System.out.printf("***** Compilation failed!!!\n");
