@@ -2,21 +2,13 @@ package mirror
 
 import compiler.DynamicCompiler
 import org.eclipse.jdt.core.ICompilationUnit
-import org.eclipse.jdt.core.dom.CompilationUnit
-import org.eclipse.jdt.core.dom.ASTParser
-import org.eclipse.jdt.core.dom.AST
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite
-import org.eclipse.jdt.core.dom.TypeDeclaration
-import org.eclipse.jdt.core.dom.Block
+import org.eclipse.jdt.core.dom._
 import org.eclipse.jface.text.Document
-import org.eclipse.jdt.core.dom.Expression
 import scala.collection.mutable.ArrayBuffer
-import org.eclipse.jdt.core.dom.Type
 import java.io.File
-import org.eclipse.jdt.core.dom.VariableDeclarationStatement
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment
 import java.util.ArrayList
 import java.util.Collection
+import org.eclipse.jdt.core.dom.rewrite.ASTRewrite
 
 class MirrorCompiler() {
   var documentListener: DocumentListener = null
