@@ -6,23 +6,20 @@ import scala.collection.mutable.ArrayBuffer
 import org.eclipse.jdt.core.ICompilationUnit
 import org.eclipse.jdt.core.IType
 import org.eclipse.jdt.core.Signature
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment
+import org.eclipse.jdt.core.dom.VariableDeclarationStatement
 import org.eclipse.jface.text.DocumentEvent
 import org.eclipse.jface.text.IDocument
 import org.eclipse.jface.text.IDocumentListener
 import org.eclipse.swt.SWT
-import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt.events.FocusEvent
 import org.eclipse.swt.events.FocusListener
 import org.eclipse.swt.widgets.Composite
-import org.eclipse.swt.widgets.Control
 import org.eclipse.swt.widgets.Event
 import org.eclipse.swt.widgets.Label
 import org.eclipse.swt.widgets.Listener
 import org.eclipse.swt.widgets.Text
 import org.eclipse.ui.IEditorPart
-import org.eclipse.jdt.core.dom.VariableDeclarationStatement
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment
-import java.io.File
 
 class DocumentListener extends IDocumentListener {
   var document: IDocument = null
@@ -76,7 +73,7 @@ class DocumentListener extends IDocumentListener {
             inputValue setMessage message.get.toString
             parameters += inputHandler objectFromString (input, methodName, message.get.toString)
           } else {
-            val x = inputHandler randomObjectFromString(input, methodName)
+            val x = inputHandler randomObjectFromString (input, methodName)
             inputValue setMessage x._2
             parameters += x._1
             /* Userinput welcome below disabled in favor of random generated input
@@ -116,7 +113,7 @@ class DocumentListener extends IDocumentListener {
         // Add to the y value, so that the possible next input box will be below the previous 
         y += point.y
       }
-      
+
       // Add vars from parsing AST 
       compiler.startParsing(unit, methodName)
       var i = 0
@@ -125,9 +122,9 @@ class DocumentListener extends IDocumentListener {
         val result = MirrorASTHelper.readFile(name.toString)
         val inputLabel = new Label(group, SWT.NONE)
         inputLabel setLocation (0, y)
-        inputLabel setText v.getType + " " + name.toString + " = "  + result.replace("\n", "") + " | "
+        inputLabel setText v.getType + " " + name.toString + " = " + result.replace("\n", "")
         inputLabel pack
-        
+
         y += inputLabel.getSize.y
         i += 1
       }

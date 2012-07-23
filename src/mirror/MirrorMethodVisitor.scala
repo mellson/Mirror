@@ -1,15 +1,9 @@
 package mirror
 
-import org.eclipse.jdt.core.dom.ASTVisitor
 import scala.collection.mutable.ArrayBuffer
+import org.eclipse.jdt.core.dom.ASTVisitor
 import org.eclipse.jdt.core.dom.MethodDeclaration
-import org.eclipse.jdt.core.dom.ExpressionStatement
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement
-import org.eclipse.jdt.core.dom.ReturnStatement
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment
-import org.eclipse.jdt.core.dom.Type
-import org.eclipse.jdt.core.dom.ForStatement
-import org.eclipse.jdt.core.dom.Block
 
 class MirrorMethodVisitor extends ASTVisitor {
   var methodName: String = null

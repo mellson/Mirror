@@ -92,12 +92,12 @@ class PartListener extends IPartListener2 with CaretListener {
   }
 
   def partClosed(partRef: IWorkbenchPartReference): Unit = {
-        // Check if the part closed is a Java source file
-        val title = partRef.getTitle.toLowerCase
-        if (title.endsWith(".java")) {
-          // Don't listen to changes in the document anymore
-          listener.dispose
-        }
+    // Check if the part closed is a Java source file
+    val title = partRef.getTitle.toLowerCase
+    if (title.endsWith(".java")) {
+      // Don't listen to changes in the document anymore
+      listener.dispose
+    }
   }
 
   def caretMoved(event: CaretEvent) {

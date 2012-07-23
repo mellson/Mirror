@@ -2,9 +2,6 @@ package mirror
 
 import scala.Array.canBuildFrom
 import scala.collection.mutable.HashMap
-import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable.ListBuffer
-import scala.collection.mutable.MutableList
 
 class InputHandler {
   val savedInputs = new HashMap[String, String]
@@ -90,13 +87,13 @@ class InputHandler {
 
     for (i <- 1 to 10)
       println(i)
-    
+
     if (depth == 1)
       true
     else
       false
   }
-  
+
   def randomObjectFromString(parameterName: String, methodName: String) = {
     // Look for letters andgGet the basic type. int, double etc
     val lettersRegEx = """[A-Za-z]+""".r
@@ -112,30 +109,29 @@ class InputHandler {
       val x = randomValueFromType(depth, baseType).asInstanceOf[Object]
       val s = TypeDecorator.stringRepresentation(x)
       savedInputs.put(parameterName + methodName, s)
-      (x,s)
-    }
-    else
+      (x, s)
+    } else
       null
   }
-  
+
   def randomValueFromType(depth: Int, typeString: String): Any = (depth, typeString) match {
     case (0, "byte") => r.nextInt(100).toByte
-    case (1, "byte") => for(i <- 1 to 10 toArray) yield r.nextInt(100).toByte
+    case (1, "byte") => for (i <- 1 to 10 toArray) yield r.nextInt(100).toByte
     case (0, "short") => r.nextInt(100).toShort
-    case (1, "short") => for(i <- 1 to 10 toArray) yield r.nextInt(100).toShort
+    case (1, "short") => for (i <- 1 to 10 toArray) yield r.nextInt(100).toShort
     case (0, "int") => r.nextInt(100)
-    case (1, "int") => for(i <- 1 to 10 toArray) yield r.nextInt(100)
+    case (1, "int") => for (i <- 1 to 10 toArray) yield r.nextInt(100)
     case (0, "long") => r.nextLong
-    case (1, "long") => for(i <- 1 to 10 toArray) yield r.nextLong
+    case (1, "long") => for (i <- 1 to 10 toArray) yield r.nextLong
     case (0, "float") => r.nextFloat
-    case (1, "float") => for(i <- 1 to 10 toArray) yield r.nextFloat
+    case (1, "float") => for (i <- 1 to 10 toArray) yield r.nextFloat
     case (0, "double") => r.nextDouble
-    case (1, "double") => for(i <- 1 to 10 toArray) yield r.nextDouble
+    case (1, "double") => for (i <- 1 to 10 toArray) yield r.nextDouble
     case (0, "char") => r.nextInt(100).toChar
-    case (1, "char") => for(i <- 1 to 10 toArray) yield r.nextInt(100).toChar
+    case (1, "char") => for (i <- 1 to 10 toArray) yield r.nextInt(100).toChar
     case (0, "string") => r.nextString(3)
-    case (1, "string") => for(i <- 1 to 10 toArray) yield r.nextString(3)
+    case (1, "string") => for (i <- 1 to 10 toArray) yield r.nextString(3)
     case (0, "boolean") => r.nextBoolean
-    case (1, "boolean") => for(i <- 1 to 10 toArray) yield r.nextBoolean
+    case (1, "boolean") => for (i <- 1 to 10 toArray) yield r.nextBoolean
   }
 }

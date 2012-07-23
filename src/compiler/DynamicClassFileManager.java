@@ -6,34 +6,38 @@
 
 package compiler;
 
-import java.io.*;
+import java.io.IOException;
 
-import javax.tools.*;
+import javax.tools.FileObject;
+import javax.tools.ForwardingJavaFileManager;
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
+import javax.tools.StandardJavaFileManager;
 
-public class DynamicClassFileManager <FileManager> extends ForwardingJavaFileManager<JavaFileManager> {
+public class DynamicClassFileManager<FileManager> extends
+		ForwardingJavaFileManager<JavaFileManager> {
 	private ByteArrayClassLoader loader = null;
-	
+
 	DynamicClassFileManager(StandardJavaFileManager mgr) {
 		super(mgr);
 		try {
 			loader = new ByteArrayClassLoader();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace(System.out);
 		}
 	}
-	
+
 	@Override
-	public JavaFileObject getJavaFileForOutput(Location location, String name, Kind kind, FileObject sibling)
-		throws IOException {
+	public JavaFileObject getJavaFileForOutput(Location location, String name,
+			Kind kind, FileObject sibling) throws IOException {
 		ByteArrayJavaFileObject co = new ByteArrayJavaFileObject(name, kind);
 		loader.put(name, co);
 		return co;
 	}
-	
+
 	@Override
 	public ClassLoader getClassLoader(Location location) {
-        return loader;
+		return loader;
 	}
 }

@@ -14,12 +14,12 @@ class MirrorCompiler() {
   var documentListener: DocumentListener = null
   var modifiedSource: Document = null;
   var varDeclStmts: Array[VariableDeclarationStatement] = null
-  var parser: CompilationUnit  = null
+  var parser: CompilationUnit = null
 
   def compile(source: String, className: String, methodName: String, parameters: Array[Object], unit: ICompilationUnit) {
     // Parse the AST and get the variables
     startParsing(unit, methodName)
-    
+
     // Add the code needed for retrieving values
     rewrite(unit)
 
@@ -56,7 +56,7 @@ class MirrorCompiler() {
   def rewrite(unit: ICompilationUnit) {
     val ast = parser.getAST
     val rewriter = ASTRewrite.create(ast)
-    
+
     // Get insertion position
     val typeDecl = parser.types().get(0).asInstanceOf[TypeDeclaration]
     for (m <- typeDecl.getMethods()) {
@@ -65,7 +65,7 @@ class MirrorCompiler() {
         var i = 1
         for (v <- varDeclStmts) {
           val block = m.getBody
-          
+
           // create new statements for insertion
           val stringMethodCall = ast.newMethodInvocation
           stringMethodCall.setName(ast.newSimpleName("stringRepresentation"))
@@ -74,16 +74,16 @@ class MirrorCompiler() {
           val name = v.fragments.get(0).asInstanceOf[VariableDeclarationFragment].getName.toString
           val nameSL = ast.newStringLiteral
           nameSL.setLiteralValue(name)
-          
+
           // This bit needs to be done in Java because Scala doesn't like the type uncertainty
           MirrorASTHelper.argAdder(stringMethodCall, ast.newSimpleName(name), nameSL)
           val newStatement = ast.newExpressionStatement(stringMethodCall)
-          
+
           // Insert the new code and apply the edits
           val listRewrite = rewriter.getListRewrite(block, Block.STATEMENTS_PROPERTY)
-          listRewrite.insertAt(newStatement, listRewrite.getOriginalList.indexOf(v)+i, null)
+          listRewrite.insertAt(newStatement, listRewrite.getOriginalList.indexOf(v) + i, null)
           i += 1
-          
+
           val edits = rewriter.rewriteAST()
           modifiedSource = new Document(unit.getSource())
           edits.apply(modifiedSource)
