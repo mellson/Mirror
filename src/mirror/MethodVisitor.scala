@@ -1,9 +1,7 @@
 package mirror
 
 import scala.collection.mutable.ArrayBuffer
-import org.eclipse.jdt.core.dom.ASTVisitor
-import org.eclipse.jdt.core.dom.MethodDeclaration
-import org.eclipse.jdt.core.dom.VariableDeclarationStatement
+import org.eclipse.jdt.core.dom._
 
 class MirrorMethodVisitor extends ASTVisitor {
   var methodName: String = null

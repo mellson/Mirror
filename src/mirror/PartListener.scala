@@ -1,17 +1,10 @@
 package mirror
 
 import org.eclipse.core.resources.ResourcesPlugin
-import org.eclipse.jdt.core.ICompilationUnit
-import org.eclipse.jdt.core.IPackageFragmentRoot
-import org.eclipse.jdt.core.JavaCore
-import org.eclipse.swt.custom.CaretEvent
-import org.eclipse.swt.custom.CaretListener
-import org.eclipse.swt.custom.StyledText
-import org.eclipse.swt.widgets.Composite
-import org.eclipse.swt.widgets.Control
-import org.eclipse.ui.IPartListener2
-import org.eclipse.ui.IWorkbenchPartReference
-import org.eclipse.ui.PlatformUI
+import org.eclipse.jdt.core._
+import org.eclipse.swt.custom._
+import org.eclipse.swt.widgets._
+import org.eclipse.ui._
 import org.eclipse.ui.texteditor.ITextEditor
 
 class PartListener extends IPartListener2 with CaretListener {

@@ -76,7 +76,7 @@ class MirrorCompiler() {
           nameSL.setLiteralValue(name)
 
           // This bit needs to be done in Java because Scala doesn't like the type uncertainty
-          MirrorASTHelper.argAdder(stringMethodCall, ast.newSimpleName(name), nameSL)
+          ASTHelper.argAdder(stringMethodCall, ast.newSimpleName(name), nameSL)
           val newStatement = ast.newExpressionStatement(stringMethodCall)
 
           // Insert the new code and apply the edits

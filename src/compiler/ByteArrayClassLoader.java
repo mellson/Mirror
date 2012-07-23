@@ -6,8 +6,7 @@
 
 package compiler;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ByteArrayClassLoader extends ClassLoader {
 	private Map<String, ByteArrayJavaFileObject> cache = new HashMap<String, ByteArrayJavaFileObject>();

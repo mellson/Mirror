@@ -1,16 +1,12 @@
 package mirror;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 // Helper class for handling files and adding uncertain types to method invocations
-public class MirrorASTHelper {
+public class ASTHelper {
 	@SuppressWarnings("unchecked")
 	public static void argAdder(MethodInvocation me, Object o, Object name) {
 		List<Object> list = new ArrayList<Object>();

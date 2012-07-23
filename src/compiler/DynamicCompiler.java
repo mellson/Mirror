@@ -1,21 +1,16 @@
 /*
  * Name: Bhaskar S
  * 
- * Date: 10/10/2009 
+ * Date: 10/10/2009
+ * 
+ * Modified by Anders Bech Mellson 23.07.12
  */
 
 package compiler;
 
 import java.util.Arrays;
-
-import javax.tools.Diagnostic;
-import javax.tools.DiagnosticCollector;
-import javax.tools.JavaCompiler;
+import javax.tools.*;
 import javax.tools.JavaCompiler.CompilationTask;
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
-import javax.tools.ToolProvider;
-
 import mirror.DocumentListener;
 
 public class DynamicCompiler {

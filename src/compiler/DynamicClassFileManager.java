@@ -7,13 +7,8 @@
 package compiler;
 
 import java.io.IOException;
-
-import javax.tools.FileObject;
-import javax.tools.ForwardingJavaFileManager;
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
+import javax.tools.*;
 import javax.tools.JavaFileObject.Kind;
-import javax.tools.StandardJavaFileManager;
 
 public class DynamicClassFileManager<FileManager> extends
 		ForwardingJavaFileManager<JavaFileManager> {

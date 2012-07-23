@@ -3,22 +3,12 @@
 package mirror
 
 import scala.collection.mutable.ArrayBuffer
-import org.eclipse.jdt.core.ICompilationUnit
-import org.eclipse.jdt.core.IType
-import org.eclipse.jdt.core.Signature
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment
-import org.eclipse.jdt.core.dom.VariableDeclarationStatement
-import org.eclipse.jface.text.DocumentEvent
-import org.eclipse.jface.text.IDocument
-import org.eclipse.jface.text.IDocumentListener
+import org.eclipse.jdt.core._
+import org.eclipse.jdt.core.dom._
+import org.eclipse.jface.text._
 import org.eclipse.swt.SWT
-import org.eclipse.swt.events.FocusEvent
-import org.eclipse.swt.events.FocusListener
-import org.eclipse.swt.widgets.Composite
-import org.eclipse.swt.widgets.Event
-import org.eclipse.swt.widgets.Label
-import org.eclipse.swt.widgets.Listener
-import org.eclipse.swt.widgets.Text
+import org.eclipse.swt.events._
+import org.eclipse.swt.widgets._
 import org.eclipse.ui.IEditorPart
 
 class DocumentListener extends IDocumentListener {
@@ -119,7 +109,7 @@ class DocumentListener extends IDocumentListener {
       var i = 0
       for (v <- ar) {
         val name = v.fragments.get(0).asInstanceOf[VariableDeclarationFragment].getName
-        val result = MirrorASTHelper.readFile(name.toString)
+        val result = ASTHelper.readFile(name.toString)
         val inputLabel = new Label(group, SWT.NONE)
         inputLabel setLocation (0, y)
         inputLabel setText v.getType + " " + name.toString + " = " + result.replace("\n", "")

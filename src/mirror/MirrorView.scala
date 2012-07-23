@@ -3,12 +3,8 @@
 package mirror
 
 import org.eclipse.swt.SWT
-import org.eclipse.swt.events.SelectionAdapter
-import org.eclipse.swt.events.SelectionEvent
-import org.eclipse.swt.widgets.Button
-import org.eclipse.swt.widgets.Composite
-import org.eclipse.swt.widgets.Display
-import org.eclipse.swt.widgets.Label
+import org.eclipse.swt.events._
+import org.eclipse.swt.widgets._
 import org.eclipse.ui.PlatformUI
 import org.eclipse.ui.part.ViewPart
 
