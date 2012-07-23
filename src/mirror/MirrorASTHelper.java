@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
-
+// Helper class for handling files and adding uncertain types to method invocations
 public class MirrorASTHelper {	
 	@SuppressWarnings("unchecked")
 	public static void argAdder(MethodInvocation me, Object o, Object name) {
@@ -23,6 +23,7 @@ public class MirrorASTHelper {
 		File mirrorFile = new File(file);
 		if (!mirrorFile.exists())
 			mirrorFile.createNewFile();
+		mirrorFile.deleteOnExit();
 	    BufferedReader reader = new BufferedReader( new FileReader (file));
 	    String         line = null;
 	    StringBuilder  stringBuilder = new StringBuilder();

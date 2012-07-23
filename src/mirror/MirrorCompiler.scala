@@ -54,7 +54,6 @@ class MirrorCompiler() {
   }
 
   def rewrite(unit: ICompilationUnit) {
-//    parser = parse(unit)
     val ast = parser.getAST
     val rewriter = ASTRewrite.create(ast)
     
@@ -68,26 +67,26 @@ class MirrorCompiler() {
           val block = m.getBody
           
           // create new statements for insertion
-          val newInvocation = ast.newMethodInvocation
-          newInvocation.setName(ast.newSimpleName("anders"))
+          val stringMethodCall = ast.newMethodInvocation
+          stringMethodCall.setName(ast.newSimpleName("stringRepresentation"))
 
           // Get the object and the name of the object and add that as arguments to the methodcall
           val name = v.fragments.get(0).asInstanceOf[VariableDeclarationFragment].getName.toString
           val nameSL = ast.newStringLiteral
           nameSL.setLiteralValue(name)
+          
           // This bit needs to be done in Java because Scala doesn't like the type uncertainty
-          MirrorASTHelper.argAdder(newInvocation, ast.newSimpleName(name), nameSL)
-          val newStatement = ast.newExpressionStatement(newInvocation)
+          MirrorASTHelper.argAdder(stringMethodCall, ast.newSimpleName(name), nameSL)
+          val newStatement = ast.newExpressionStatement(stringMethodCall)
           
           // Insert the new code and apply the edits
           val listRewrite = rewriter.getListRewrite(block, Block.STATEMENTS_PROPERTY)
-          listRewrite.insertAt(newStatement, i, null)
+          listRewrite.insertAt(newStatement, listRewrite.getOriginalList.indexOf(v)+i, null)
+          i += 1
+          
           val edits = rewriter.rewriteAST()
           modifiedSource = new Document(unit.getSource())
           edits.apply(modifiedSource)
-          
-          // Adding two lines for the next insert because I just inserted a line here
-          i += 2
         }
       }
     }

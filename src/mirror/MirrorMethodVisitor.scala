@@ -8,6 +8,8 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement
 import org.eclipse.jdt.core.dom.ReturnStatement
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment
 import org.eclipse.jdt.core.dom.Type
+import org.eclipse.jdt.core.dom.ForStatement
+import org.eclipse.jdt.core.dom.Block
 
 class MirrorMethodVisitor extends ASTVisitor {
   var methodName: String = null
@@ -15,16 +17,11 @@ class MirrorMethodVisitor extends ASTVisitor {
 
   override def visit(node: MethodDeclaration) = {
     if (node.getName.toString.equals(methodName)) {
-      val ast = node.getAST
       for (s <- node.getBody.statements.toArray) {
         if (s.isInstanceOf[VariableDeclarationStatement]) {
           val x = s.asInstanceOf[VariableDeclarationStatement]
-          declarations += x          
-//          x.getType
-        } else if (s.isInstanceOf[ExpressionStatement]) {}
-        //          println("Expr Stmt: " + s)
-        else if (s.isInstanceOf[ReturnStatement]) {}
-        //          println("Return Stmt: " + s)
+          declarations += x
+        }
       }
     }
     super.visit(node)

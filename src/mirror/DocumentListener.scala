@@ -71,14 +71,18 @@ class DocumentListener extends IDocumentListener {
 
         if (inputHandler.allowedInput(input)) {
           // Check if there is saved any values for the input
-          val message = inputHandler.savedInputs.get(input + methodName)
+          var message = inputHandler.savedInputs.get(input + methodName)
           if (message != None) {
             inputValue setMessage message.get.toString
             parameters += inputHandler objectFromString (input, methodName, message.get.toString)
           } else {
+            val x = inputHandler randomObjectFromString(input, methodName)
+            inputValue setMessage x._2
+            parameters += x._1
+            /* Userinput welcome below disabled in favor of random generated input
             inputValue setMessage "Set the value for " + input + " here"
             if (inputHandler.isInputArray(input))
-              inputValue setMessage inputValue.getMessage + " (use ; as separater)"
+              inputValue setMessage inputValue.getMessage + " (use ; as separater)" */
           }
 
           // When the textfield gets focused, set the saved value
@@ -112,7 +116,7 @@ class DocumentListener extends IDocumentListener {
         // Add to the y value, so that the possible next input box will be below the previous 
         y += point.y
       }
-
+      
       // Add vars from parsing AST 
       compiler.startParsing(unit, methodName)
       var i = 0
@@ -121,10 +125,9 @@ class DocumentListener extends IDocumentListener {
         val result = MirrorASTHelper.readFile(name.toString)
         val inputLabel = new Label(group, SWT.NONE)
         inputLabel setLocation (0, y)
-        inputLabel setText v.getType + " " + name.toString + " = "  + result.replace("\n", "")
+        inputLabel setText v.getType + " " + name.toString + " = "  + result.replace("\n", "") + " | "
         inputLabel pack
-        val file = new File(name.toString)
-        file.deleteOnExit
+        
         y += inputLabel.getSize.y
         i += 1
       }
