@@ -37,7 +37,7 @@ public class DynamicCompiler {
 				null, units);
 		boolean status = task.call();
 		if (status) {
-			System.out.printf("Compilation successful!!!\n");
+//			System.out.printf("Compilation successful!!!\n");
 			clazz = manager.getClassLoader(null).loadClass(fullName);
 			documentListener.clearErrorMessage();
 		} else {
@@ -46,7 +46,7 @@ public class DynamicCompiler {
 				documentListener.clearReturnMessage();
 				documentListener.setErrorMessage(d.getMessage(null));
 			}
-			System.out.printf("***** Compilation failed!!!\n");
+//			System.out.printf("***** Compilation failed!!!\n");
 		}
 
 		return clazz;
