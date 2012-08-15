@@ -1,3 +1,5 @@
+/* (c) 2012 Anders Bech Mellson - anbh@itu.dk */
+
 package mirror
 
 import scala.Array.canBuildFrom

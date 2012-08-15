@@ -28,7 +28,7 @@ class DocumentListener extends IDocumentListener {
   var returnMessage = ""
   var y = 0
   var caretPosition = 0
-  var ar: Array[VariableDeclarationStatement] = null
+  var ar: Array[Statement] = null
 
   // React to changes in the source code from the editor
   def documentAboutToBeChanged(event: DocumentEvent) = {}
@@ -108,15 +108,24 @@ class DocumentListener extends IDocumentListener {
       compiler.startParsing(unit, methodName)
       var i = 0
       for (v <- ar) {
-        val name = v.fragments.get(0).asInstanceOf[VariableDeclarationFragment].getName
-        val result = ASTHelper.readFile(name.toString)
-        val inputLabel = new Label(group, SWT.NONE)
-        inputLabel setLocation (0, y)
-        inputLabel setText v.getType + " " + name.toString + " = " + result.replace("\n", "")
-        inputLabel pack
+        var text = ""
+        if (v.isInstanceOf[VariableDeclarationStatement]) {
+          val stmt = v.asInstanceOf[VariableDeclarationStatement]
+          val name = stmt.fragments.get(0).asInstanceOf[VariableDeclarationFragment].getName
+          val result = ASTHelper.readFile(name.toString)
+          text = stmt.getType + " " + name.toString + " = " + result.replace("\n", "")
+        } else if (v.isInstanceOf[ExpressionStatement]) {
+//          val stmt = v.asInstanceOf[ExpressionStatement]
+//          text = stmt.toString
+        }
+          
+          val inputLabel = new Label(group, SWT.NONE)
+          inputLabel setLocation (0, y)
+          inputLabel setText text
+          inputLabel pack
 
-        y += inputLabel.getSize.y
-        i += 1
+          y += inputLabel.getSize.y
+          i += 1
       }
     }
 

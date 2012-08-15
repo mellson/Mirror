@@ -1,3 +1,5 @@
+/* (c) 2012 Anders Bech Mellson - anbh@itu.dk */
+
 package mirror;
 
 // Helperclass that can decorate types, eg turn an array into a pretty string.
